@@ -8,7 +8,7 @@
   "scripts": {
     "build": "nest build",
     "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\"",
-    "start": "node dist/main",
+    "start": "node dist/main.js",
     "start:dev": "nest start --watch",
     "start:debug": "nest start --debug --watch",
     "start:prod": "node dist/main",
@@ -28,7 +28,8 @@
     "@nestjs/swagger": "^7.1.12",
     "axios": "^1.5.0",
     "reflect-metadata": "^0.1.13",
-    "rxjs": "^7.2.0"
+    "rxjs": "^7.2.0",
+    "swagger-ui-express": "^4.6.3"
   },
   "devDependencies": {
     "@nestjs/cli": "^9.0.0",

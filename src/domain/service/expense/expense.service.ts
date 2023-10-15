@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { Expense, ExpenseDocument } from '../../../infrastructure/schema/expense/expense.schema';
-import { IExpenseDTO } from 'src/application/dto/Expense/expense.dto';
+import { IExpenseDTO } from '../../../application/dto/Expense/expense.dto';
 
 @Injectable()
 export class ExpenseService {

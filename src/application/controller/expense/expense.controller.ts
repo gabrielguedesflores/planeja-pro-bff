@@ -1,15 +1,15 @@
 import { Body, Controller, Get, HttpCode, HttpException, HttpStatus, Post, Req, Headers, Delete, Put, Param } from '@nestjs/common';
 import { ApiBearerAuth, ApiBody, ApiHeaders, ApiOperation, ApiParam, ApiResponse, ApiTags } from '@nestjs/swagger';
-import { ExpenseUser } from 'src/application/dto/Expense/expense-user.dto';
-import { ExpenseService } from 'src/domain/service/expense/expense.service';
-import { Expense, ExpenseDocument } from 'src/infrastructure/schema/expense/expense.schema';
+import { ExpenseUser } from '../../../application/dto/Expense/expense-user.dto';
+import { ExpenseService } from '../../../domain/service/expense/expense.service';
+import { Expense, ExpenseDocument } from '../../../infrastructure/schema/expense/expense.schema';
 
 @ApiTags('/expense')
 @ApiBearerAuth()
 @ApiHeaders([
   { name: 'Authorization', description: 'Bearer token do bff' }
 ])
-@Controller('expense-controller')
+@Controller('expense/v1')
 export class ExpenseController {
   constructor(
     private readonly expenseService: ExpenseService,

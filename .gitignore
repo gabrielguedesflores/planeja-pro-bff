@@ -37,3 +37,7 @@ lerna-debug.log*
 
 # environment
 .env
+
+# vercel 
+.vercel/*
+.vercel.json

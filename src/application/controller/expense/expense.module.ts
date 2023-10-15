@@ -3,7 +3,7 @@ import { MongooseModule } from '@nestjs/mongoose';
 import { ExpenseController } from './expense.controller';
 import { ExpenseService } from '../../../domain/service/expense/expense.service';
 import { Expense, ExpenseSchema } from '../../../infrastructure/schema/expense/expense.schema';
-import { AuthMiddleware } from 'src/middleware/auth.middleware';
+import { AuthMiddleware } from '../../../middleware/auth.middleware';
 
 @Module({
   imports: [MongooseModule.forFeature([{ name: Expense.name, schema: ExpenseSchema }])],

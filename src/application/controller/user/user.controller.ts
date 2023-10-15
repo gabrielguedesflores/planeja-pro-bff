@@ -1,14 +1,14 @@
 import { Body, Controller, Delete, Get, Param, Post, Put } from '@nestjs/common';
 import { ApiBearerAuth, ApiBody, ApiHeaders, ApiOperation, ApiParam, ApiResponse, ApiTags } from '@nestjs/swagger';
-import { UserService } from 'src/domain/service/user/user.service';
-import { User, UserDocument } from 'src/infrastructure/schema/user/user.schema';
+import { UserService } from '../../../domain/service/user/user.service';
+import { User, UserDocument } from '../../../infrastructure/schema/user/user.schema';
 
 @ApiTags('/users')
 @ApiBearerAuth()
 @ApiHeaders([
     { name: 'Authorization', description: 'Bearer token do bff' }
 ])
-@Controller('users')
+@Controller('users/v1')
 export class UsersController {
     constructor(private readonly userService: UserService) { }
 
