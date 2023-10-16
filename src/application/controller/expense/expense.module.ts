@@ -4,9 +4,16 @@ import { ExpenseController } from './expense.controller';
 import { ExpenseService } from '../../../domain/service/expense/expense.service';
 import { Expense, ExpenseSchema } from '../../../infrastructure/schema/expense/expense.schema';
 import { AuthMiddleware } from '../../../middleware/auth.middleware';
+import { JwtModule } from '@nestjs/jwt';
 
 @Module({
-  imports: [MongooseModule.forFeature([{ name: Expense.name, schema: ExpenseSchema }])],
+  imports: [
+    JwtModule.register({
+      secret: process.env.SECRET_KEY,
+      signOptions: { expiresIn: '1h' },
+    }),
+    MongooseModule.forFeature([{ name: Expense.name, schema: ExpenseSchema }])
+  ],
   controllers: [ExpenseController],
   providers: [ExpenseService],
 })

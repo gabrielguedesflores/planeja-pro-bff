@@ -1,34 +1,34 @@
 import { Injectable, NestMiddleware, UnauthorizedException } from '@nestjs/common';
 import { Request, Response, NextFunction } from 'express';
-import axios from 'axios';
+import { JwtService } from '@nestjs/jwt';
 
 @Injectable()
 export class AuthMiddleware implements NestMiddleware {
-    async use(req: Request, res: Response, next: NextFunction) {
-        const authorization = req.headers.authorization;
-        // const urlToken = "url que valida o token recebido";
+	constructor(private readonly jwtService: JwtService) { }
 
-        if (req.path === "/" || req.path === "/management/health") {
-            return next();
-        }
+	async use(req: Request, res: Response, next: NextFunction) {
+		// TODO: rever estratégia de validação de token
+		const authorization = req.headers.authorization;
 
-        if (!authorization) {
-            throw new UnauthorizedException('Token não informado');
-        }
+		if (req.path === "/" || req.path === "/management/health") {
+			return next();
+		}
 
-        return next();
-        // TODO: realizar login
-        // try {
-        //     const { data } = await axios.get(urlToken, {
-        //         headers: {
-        //             Authorization: authorization,
-        //         },
-        //     });
-        //     if (data.Access_Token) {
-        //         next();
-        //     }
-        // } catch (err) {
-        //     throw new UnauthorizedException('Token inválido');
-        // }
-    }
+		if (!authorization || !authorization.startsWith('Bearer ')) {
+			throw new UnauthorizedException('Token não informado ou mal formatado');
+		}
+
+		try {
+			const token = authorization.split('Bearer ')[1];
+			const decoded = this.jwtService.verify(token); 
+
+			if (!decoded || !decoded.sub) {
+				throw new UnauthorizedException('Token inválido ou payload mal formatado');
+			}
+
+			return next();
+		} catch (err) {
+			throw new UnauthorizedException('Token inválido');
+		}
+	}
 }
