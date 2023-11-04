@@ -31,6 +31,10 @@ export class Expense {
   @ApiProperty()
   tags: [string];
 
+  @Prop()
+  @ApiProperty()
+  recurrence: boolean;
+
 }
 
 export const ExpenseSchema = SchemaFactory.createForClass(Expense);

@@ -18,7 +18,7 @@ export class ExpenseController {
   @Get('/user/:userId')
   @ApiOperation({ summary: 'Get all expenses for users' })
   @ApiResponse({ status: 200, description: 'Return all expenses.' })
-  @ApiParam({ name: 'userId', required: true, description: 'User ID' }) // Adicionado ApiParam para a documentação do Swagger
+  @ApiParam({ name: 'userId', required: true, description: 'User ID' })
   async findAllForUser(@Param('userId') userId: string) {
     return this.expenseService.findAllByUserId(userId);
   }
@@ -27,7 +27,7 @@ export class ExpenseController {
   @ApiOperation({ summary: 'Create an expenses' })
   @ApiResponse({ status: 201, description: 'The expense has been successfully created.' })
   @ApiBody({ type: Expense })
-  async create(@Body() createResponseDto: ExpenseDocument): Promise<{ status: boolean }> {
+  async create(@Body() createResponseDto: ExpenseDocument): Promise<{ created: boolean }> {
     return this.expenseService.create(createResponseDto);
   }
 

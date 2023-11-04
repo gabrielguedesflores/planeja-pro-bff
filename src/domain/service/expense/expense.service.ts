@@ -8,10 +8,10 @@ import { IExpenseDTO } from '../../../application/dto/Expense/expense.dto';
 export class ExpenseService {
 	constructor(@InjectModel(Expense.name) private expenseModel: Model<ExpenseDocument>) { }
 
-	async create(bodyRequest: ExpenseDocument): Promise<{ status: boolean }> {
+	async create(bodyRequest: ExpenseDocument): Promise<{ created: boolean }> {
 		const createExpense = new this.expenseModel(bodyRequest);
 		await createExpense.save();
-		return { status: true };
+		return { created: true };
 	}
 
 	async findAllByUserId(userId: string): Promise<ExpenseDocument[]> {
