@@ -4,7 +4,7 @@ import { ExpenseUser } from '../../../application/dto/Expense/expense-user.dto';
 import { ExpenseService } from '../../../domain/service/expense/expense.service';
 import { Expense, ExpenseDocument } from '../../../infrastructure/schema/expense/expense.schema';
 
-@ApiTags('/expense')
+@ApiTags('Despesas')
 @ApiBearerAuth()
 @ApiHeaders([
   { name: 'Authorization', description: 'Bearer token do bff' }

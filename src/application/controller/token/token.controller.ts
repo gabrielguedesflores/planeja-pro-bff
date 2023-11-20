@@ -5,7 +5,7 @@ import { UserService } from '../../../domain/service/user/user.service';
 import { ILoginUserDTO } from '../../dto/User/login-user.dto';
 import { Login } from '../../../infrastructure/schema/login/login.schema';
 
-@ApiTags('/token')
+@ApiTags('Autenticação')
 @Controller('token/v1')
 export class TokenController {
   constructor(

@@ -3,7 +3,7 @@ import { ApiBearerAuth, ApiBody, ApiHeaders, ApiOperation, ApiParam, ApiResponse
 import { UserService } from '../../../domain/service/user/user.service';
 import { User, UserDocument } from '../../../infrastructure/schema/user/user.schema';
 
-@ApiTags('/users')
+@ApiTags('Usuário')
 @ApiBearerAuth()
 @ApiHeaders([
   { name: 'Authorization', description: 'Bearer token do bff' }

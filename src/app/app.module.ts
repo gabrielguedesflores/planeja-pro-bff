@@ -6,6 +6,7 @@ import { ExpenseModule } from '../application/controller/expense/expense.module'
 import { UserModule } from '../application/controller/user/user.module';
 import { TokenModule } from 'application/controller/token/token.module';
 import { JwtModule } from '@nestjs/jwt';
+import { UploadModule } from 'application/controller/upload/upload.module';
 
 @Module({
   imports: [
@@ -18,7 +19,8 @@ import { JwtModule } from '@nestjs/jwt';
     HomeModule,
     ExpenseModule,
     UserModule,
-    TokenModule
+    TokenModule,
+    UploadModule
   ],
   controllers: [],
   providers: [],
