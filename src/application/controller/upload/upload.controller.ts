@@ -1,27 +1,23 @@
-import { Controller, Post, Param, UploadedFile, UseInterceptors, Res } from '@nestjs/common';
-import { ApiBearerAuth, ApiBody, ApiConsumes, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
-import { Response } from 'express';
-import { FileInterceptor } from '@nestjs/platform-express';
+import { Controller, Post, Param, UploadedFile, UseInterceptors, UploadedFiles, Body } from '@nestjs/common';
+import { ApiBearerAuth, ApiConsumes, ApiCreatedResponse, ApiOperation, ApiResponse, ApiTags, ApiBody } from '@nestjs/swagger';
+import { FileFieldsInterceptor, FileInterceptor } from '@nestjs/platform-express';
 import { UploadService } from 'domain/service/upload/upload.service';
-import { UploadDto } from 'application/dto/Upload/index.dto';
 
-@ApiTags('Upload Profile Image')
+@ApiTags('Upload de Imagens')
 @ApiBearerAuth()
 @Controller('upload/v1')
 export class UploadController {
-  constructor(private readonly uploadService: UploadService) {}
+  constructor(private readonly uploadService: UploadService) { }
 
   @Post('/user/:userId')
   @ApiOperation({ summary: 'Upload User Image' })
-  @ApiResponse({ status: 201, description: 'The upload has been successfully.' })
-  // @ApiBody({ type: UploadDto })
+  @ApiResponse({ status: 201, description: 'The upload has been successfully.', type: String })
   @ApiConsumes('multipart/form-data')
+  @UseInterceptors(FileInterceptor('file'))
   @ApiBody({
     schema: {
       type: 'object',
       properties: {
-        comment: { type: 'string' },
-        outletId: { type: 'integer' },
         file: {
           type: 'string',
           format: 'binary',
@@ -29,8 +25,11 @@ export class UploadController {
       },
     },
   })
-  @UseInterceptors(FileInterceptor('file'))
-  async create(@UploadedFile() file, @Param('userId') userId: string): Promise<{ imageUrl: string }> {
-    return this.uploadService.create(file, userId);
+  async create(
+    @Param('userId') userId: string,
+    @UploadedFile() file: Express.Multer.File,
+  ): Promise<{ imageUrl: string }> {
+    return this.uploadService.create(userId, file);
   }
+
 }

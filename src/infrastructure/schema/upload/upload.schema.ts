@@ -7,9 +7,8 @@ export type UploadDocument = Upload & Document;
 @Schema()
 export class Upload {
 
-  @Prop({ required: true })
-  @ApiProperty({ type: File })
-  fileImage: any
+  @ApiProperty({type:"file"})
+  file: any;
 
 }
 
