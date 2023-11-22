@@ -1,6 +1,6 @@
-import { Controller, Post, Param, UploadedFile, UseInterceptors, UploadedFiles, Body } from '@nestjs/common';
-import { ApiBearerAuth, ApiConsumes, ApiCreatedResponse, ApiOperation, ApiResponse, ApiTags, ApiBody } from '@nestjs/swagger';
-import { FileFieldsInterceptor, FileInterceptor } from '@nestjs/platform-express';
+import { Controller, Post, Get, Param, UploadedFile, UseInterceptors } from '@nestjs/common';
+import { ApiBearerAuth, ApiConsumes, ApiOperation, ApiResponse, ApiTags, ApiBody } from '@nestjs/swagger';
+import { FileInterceptor } from '@nestjs/platform-express';
 import { UploadService } from 'domain/service/upload/upload.service';
 
 @ApiTags('Upload de Imagens')
@@ -32,4 +32,14 @@ export class UploadController {
     return this.uploadService.create(userId, file);
   }
 
+  @Get('/user/:userId')
+  @ApiOperation({ summary: 'Obter Imagem do Usuário' })
+  @ApiResponse({
+    status: 200,
+    description: 'A solicitação foi concluída com sucesso.',
+    type: 'Express.Multer.File',
+  })
+  async get(@Param('userId') userId: string): Promise<Express.Multer.File | any> {
+    return this.uploadService.get(userId);
+  }
 }

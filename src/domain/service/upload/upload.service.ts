@@ -13,13 +13,17 @@ export class UploadService {
 
   async create(id: string, file: Express.Multer.File): Promise<{ imageUrl: string }> {
     try {
-      const uploadDirectory = path.join(__dirname, '../../../uploads');
+      const relativeUploadsPath = path.join('dist', 'uploads');
+      const uploadDirectory = path.join(process.cwd(), relativeUploadsPath);
+
+      if (!fs.existsSync(uploadDirectory)) {
+        fs.mkdirSync(uploadDirectory, { recursive: true });
+      }
+      
       const fileExtension = this.getFileExtension(file.mimetype);
       const fileNameWithExtension = `${id}.${fileExtension}`;
       const filePathWithExtension = path.join(uploadDirectory, fileNameWithExtension);
-      const filePath = path.join(uploadDirectory, id);
 
-      // Remove todos os arquivos com o mesmo ID na pasta 'uploads' (independentemente da extensão)
       fs.readdirSync(uploadDirectory)
         .filter(file => file.startsWith(id))
         .forEach(file => fs.unlinkSync(path.join(uploadDirectory, file)));
@@ -28,13 +32,13 @@ export class UploadService {
         throw new BadRequestException('O arquivo não é uma imagem válida.');
       }
 
-      await writeFileAsync(fileNameWithExtension, file.buffer);
+      await writeFileAsync(filePathWithExtension, file.buffer);
 
-      // TODO: Atualizar a base de dados
+      // TODO: Analisar se atualiza a base de dados aqui ou via front
 
       console.log('[UploadService] true');
       
-      const imageUrl = `http://localhost:3000/uploads/${fileNameWithExtension}`; // Substitua pela URL real do seu servidor
+      const imageUrl = `http://localhost:3000/uploads/${fileNameWithExtension}`;
 
       return { imageUrl };
     } catch (error) {
@@ -43,6 +47,35 @@ export class UploadService {
     }
   }
 
+  async get(id: string): Promise<Express.Multer.File | any> {
+    try {
+      const relativeUploadsPath = path.join('dist', 'uploads');
+      const uploadDirectory = path.join(process.cwd(), relativeUploadsPath);
+  
+      if (!fs.existsSync(uploadDirectory)) {
+        fs.mkdirSync(uploadDirectory, { recursive: true });
+      }
+  
+      const matchingFiles = fs
+        .readdirSync(uploadDirectory)
+        .filter((file) => file.startsWith(id));
+  
+      if (matchingFiles.length === 0) {
+        throw new BadRequestException('Arquivo não encontrado.');
+      }
+  
+      const fileName = matchingFiles[0];
+      const filePath = path.join(uploadDirectory, fileName);
+      const fileContent = fs.readFileSync(filePath);
+  
+      return fileContent;
+    } catch (error) {
+      console.error('Erro ao obter o arquivo:', error);
+      throw new BadRequestException('Erro ao obter o arquivo.');
+    }
+  }
+  
+  
   private isImage(file: Express.Multer.File): boolean {
     try {
       const dimensions = sizeOf(file.buffer);
